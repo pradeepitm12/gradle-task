@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: gradle-build
+spec:
+  inputs:
+    params:
+      - name: GRADLE_TASK
+        description: The Gradle task to run
+        default: "build"
+    resources:
+    - name: source
+      type: git
+      targetPath: /
+  steps:
+    - name: build
+      iamge: gradle:jre8
+      command:
+        - /opt/gradle
+      args:
+        - "$(inputs.params.GRADLE_TASK)"
